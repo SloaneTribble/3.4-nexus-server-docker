@@ -6,8 +6,8 @@ RUN apt-get update \
     && apt-get install -y \
     wget \
     openjdk-8-jre \
-    default-jdk 
-
+    default-jdk \
+    && rm -rf /var/lib/apt/lists/*
 # Download the Nexus tarball and save it to a specific location
 RUN wget https://download.sonatype.com/nexus/3/nexus-3.64.0-04-unix.tar.gz -O /tmp/nexus.tar.gz
 
@@ -18,5 +18,8 @@ RUN useradd -m nexus-user
 RUN cd /opt/ \
     && tar xvzf /tmp/nexus.tar.gz
 
-# for debugging
-RUN apt-get install -y vim
+
+USER nexus-user
+
+ENTRYPOINT [ "./opt/nexus-3.64.0-04/bin/nexus", "start" ]
+
