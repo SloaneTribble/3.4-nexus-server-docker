@@ -18,8 +18,10 @@ RUN useradd -m nexus-user
 RUN cd /opt/ \
     && tar xvzf /tmp/nexus.tar.gz
 
-
+# Make sure that the nexus-user user owns the directory used to start Nexus
+# -R performs the operation recursively
+RUN chown -R nexus-user:nexus-user /opt/
 USER nexus-user
 
-ENTRYPOINT [ "./opt/nexus-3.64.0-04/bin/nexus", "start" ]
+ENTRYPOINT [ "./opt/nexus-3.64.0-04/bin/nexus", "run" ]
 
